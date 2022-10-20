@@ -33,6 +33,17 @@ public class Impiegato {
 		setDataAssunzione(dataAssunzione);
 		setCompagnia(compagnia);
 	}
+	
+	public Impiegato(Long id, String nome, String cognome, String codiceFiscale, Date dataNascita, Date dataAssunzione,
+			Compagnia compagnia) {
+		setId(id);
+		setNome(nome);
+		setCognome(cognome);
+		setCodiceFiscale(codiceFiscale);
+		setDataNascita(dataNascita);
+		setDataAssunzione(dataAssunzione);
+		setCompagnia(compagnia);
+	}
 
 	public Long getId() {
 		return id;

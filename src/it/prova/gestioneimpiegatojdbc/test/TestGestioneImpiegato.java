@@ -34,15 +34,29 @@ public class TestGestioneImpiegato {
 
 			testUpdateCompagnia(compagniaDAOInstance);
 
-			//testDeleteCompagnia(compagniaDAOInstance);
+			// testDeleteCompagnia(compagniaDAOInstance);
 
 			testFindByExampleCompagnia(compagniaDAOInstance);
 
 			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
-			
+
 			testInsertImpiegato(impiegatoDAOInstance, compagniaDAOInstance);
-			
+
 			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance);
+
+			testListImpiegato(impiegatoDAOInstance);
+
+			testGetImpiegato(impiegatoDAOInstance);
+
+			// testUpdateImpiegato(impiegatoDAOInstance, compagniaDAOInstance);
+
+			testFindByExampleImpiegato(impiegatoDAOInstance);
+
+			testFindAllByCompagnia(impiegatoDAOInstance, compagniaDAOInstance);
+
+			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance);
+			
+			testFindAllErroriAssunzione(impiegatoDAOInstance);
 
 		} catch (Exception e) {
 
@@ -136,18 +150,95 @@ public class TestGestioneImpiegato {
 				new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1890"), elencoCompagnie.get(0));
 		int elementiInseriti = impiegatoDAOInstance.insert(impiegatoTest1);
 		elementiInseriti += impiegatoDAOInstance.insert(impiegatoTest2);
-		if(elementiInseriti != 2)
+		if (elementiInseriti != 2)
 			throw new RuntimeException("testInsertImpiegato FAILED: inserimenti non andati a buon fine.");
 		System.out.println(".......testInsertImpiegato fine: PASSED.............");
 	}
-	
+
 	private static void testFindAllByDataAssunzioneMaggioreDi(CompagniaDAO compagniaDAOInstance) throws Exception {
 		System.out.println(".......testFindAllByDataAssunzioneMaggioreDi inizio.............");
 		Date dataInput = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1890");
 		List<Impiegato> result = compagniaDAOInstance.findAllByDataAssunzioneMaggioreDi(dataInput);
-		if(result.isEmpty())
+		if (result.isEmpty())
 			throw new RuntimeException("testFindAllByDataAssunzioneMaggioreDi FAILED: ricerca non andata a buon fine.");
 		System.out.println(".......testFindAllByDataAssunzioneMaggioreDi fine: PASSED.............");
 	}
 
+	private static void testListImpiegato(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testListImpiegato inizio.............");
+		List<Impiegato> result = impiegatoDAOInstance.list();
+		if (result.isEmpty())
+			throw new RuntimeException("testListImpiegato FAILED: lista non caricata correttamente.");
+		System.out.println(".......testListImpiegato fine: PASSED.............");
+	}
+
+	private static void testGetImpiegato(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testGetImpiegato inizio.............");
+		List<Impiegato> elencoPresenti = impiegatoDAOInstance.list();
+		if (elencoPresenti.isEmpty())
+			throw new RuntimeException("testGetImpiegato FAILED: nessuna entry presente.");
+		Impiegato result = impiegatoDAOInstance.get(elencoPresenti.get(0).getId());
+		if (result == null)
+			throw new RuntimeException("testGetImpiegato FAILED: get non andato a buon fine.");
+		System.out.println(".......testGetImpiegato fine: PASSED.............");
+	}
+
+	private static void testUpdateImpiegato(ImpiegatoDAO impiegatoDAOInstance, CompagniaDAO compagniaDAOInstance)
+			throws Exception {
+		System.out.println(".......testUpdateImpiegato inizio.............");
+		List<Impiegato> elencoPresenti = impiegatoDAOInstance.list();
+		List<Compagnia> elencoCompagnie = compagniaDAOInstance.list();
+		if (elencoPresenti.isEmpty() || elencoCompagnie.isEmpty())
+			throw new RuntimeException("testUpdateImpiegato FAILED: nessuna entry presente.");
+		Impiegato elementoDaAggiornare = new Impiegato(elencoPresenti.get(0).getId(), "Mario", "Rossi", "ABC123",
+				new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1950"),
+				new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1990"), elencoCompagnie.get(0));
+		int result = impiegatoDAOInstance.update(elementoDaAggiornare);
+		if (result == 0)
+			throw new RuntimeException("testUpdateImpiegato FAILED: aggiornamento non andato a buon fine.");
+		System.out.println(".......testUpdateImpiegato fine: PASSED.............");
+
+	}
+
+	private static void testFindByExampleImpiegato(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testFindByExampleImpiegato inizio.............");
+		List<Impiegato> result = impiegatoDAOInstance.findByExample(new Impiegato("Ma", null, null, null, null));
+
+		if (result.isEmpty())
+			throw new RuntimeException("testFindByExampleImpiegato FAILED: ricerca non andata a buon fine.");
+		System.out.println(".......testFindByExampleImpiegato fine: PASSED.............");
+	}
+
+	private static void testFindAllByCompagnia(ImpiegatoDAO impiegatoDAOInstance, CompagniaDAO compagniaDAOInstance)
+			throws Exception {
+		System.out.println(".......testFindAllByCompagnia inizio.............");
+		List<Compagnia> elencoCompagnie = compagniaDAOInstance.list();
+		if (elencoCompagnie.isEmpty())
+			throw new RuntimeException("testFindAllByCompagnia FAILED: nessuna entry presente.");
+
+		List<Impiegato> result = impiegatoDAOInstance.findAllByCompagnia(elencoCompagnie.get(0));
+		if (result.isEmpty())
+			throw new RuntimeException("testFindAllByCompagnia FAILED: ricerca non andata a buon fine.");
+		System.out.println(".......testFindAllByCompagnia fine: PASSED.............");
+	}
+
+	private static void testCountByDataFondazioneCompagniaGreaterThan(ImpiegatoDAO impiegatoDAOInstance)
+			throws Exception {
+		System.out.println(".......testCountByDataFondazioneCompagniaGreaterThan inizio.............");
+		int result = impiegatoDAOInstance
+				.countByDataFondazioneCompagniaGreaterThan(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1900"));
+		if (result == 0)
+			throw new RuntimeException(
+					"testCountByDataFondazioneCompagniaGreaterThan FAILED: ricerca non andata a buon fine.");
+		System.out.println(".......testCountByDataFondazioneCompagniaGreaterThan fine: PASSED.............");
+	}
+
+	private static void testFindAllErroriAssunzione(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testFindAllErroriAssunzione inizio.............");
+		List<Impiegato> result = impiegatoDAOInstance.findAllErroriAssunzione();
+		if (result.isEmpty())
+			throw new RuntimeException("testFindAllErroriAssunzione FAILED: ricerca non andata a buon fine.");
+		System.out.println(".......testFindAllErroriAssunzione fine: PASSED.............");
+
+	}
 }
