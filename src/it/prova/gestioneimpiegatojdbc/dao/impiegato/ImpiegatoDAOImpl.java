@@ -1,5 +1,6 @@
 package it.prova.gestioneimpiegatojdbc.dao.impiegato;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -12,6 +13,10 @@ import it.prova.gestioneimpiegatojdbc.model.Compagnia;
 import it.prova.gestioneimpiegatojdbc.model.Impiegato;
 
 public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
+	
+	public ImpiegatoDAOImpl(Connection connection) {
+		super(connection);
+	}
 
 	@Override
 	public List<Impiegato> list() throws Exception {

@@ -20,6 +20,13 @@ public class Compagnia {
 		setFatturatoAnnuo(fatturatoAnnuo);
 		setDataFondazione(dataFondazione);
 	}
+	
+	public Compagnia(Long id, String ragioneSociale, int fatturatoAnnuo, Date dataFondazione) {
+		setId(id);
+		setRagionesociale(ragioneSociale);
+		setFatturatoAnnuo(fatturatoAnnuo);
+		setDataFondazione(dataFondazione);
+	}
 
 	public Long getId() {
 		return id;
