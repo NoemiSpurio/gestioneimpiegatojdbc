@@ -34,8 +34,6 @@ public class TestGestioneImpiegato {
 
 			testUpdateCompagnia(compagniaDAOInstance);
 
-			// testDeleteCompagnia(compagniaDAOInstance);
-
 			testFindByExampleCompagnia(compagniaDAOInstance);
 
 			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
@@ -48,15 +46,20 @@ public class TestGestioneImpiegato {
 
 			testGetImpiegato(impiegatoDAOInstance);
 
-			// testUpdateImpiegato(impiegatoDAOInstance, compagniaDAOInstance);
+			testUpdateImpiegato(impiegatoDAOInstance, compagniaDAOInstance);
 
 			testFindByExampleImpiegato(impiegatoDAOInstance);
 
 			testFindAllByCompagnia(impiegatoDAOInstance, compagniaDAOInstance);
 
 			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance);
-			
+
 			testFindAllErroriAssunzione(impiegatoDAOInstance);
+			
+			testDeleteAllImpiegato(impiegatoDAOInstance);
+			
+			testDeleteCompagnia(compagniaDAOInstance);
+
 
 		} catch (Exception e) {
 
@@ -240,5 +243,13 @@ public class TestGestioneImpiegato {
 			throw new RuntimeException("testFindAllErroriAssunzione FAILED: ricerca non andata a buon fine.");
 		System.out.println(".......testFindAllErroriAssunzione fine: PASSED.............");
 
+	}
+
+	private static void testDeleteAllImpiegato(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testDeleteAllImpiegato inizio.............");
+		int result = impiegatoDAOInstance.deleteAll();
+		if (result == 0)
+			throw new RuntimeException("testDeleteAllImpiegato FAILED: cancellazione non andata a buon fine.");
+		System.out.println(".......testDeleteAllImpiegato fine: PASSED.............");
 	}
 }

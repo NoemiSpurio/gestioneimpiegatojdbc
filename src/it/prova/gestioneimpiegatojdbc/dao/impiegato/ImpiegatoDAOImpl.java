@@ -97,7 +97,7 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		int result = 0;
 
 		try (PreparedStatement ps = connection.prepareStatement(
-				"update impiegato set (nome,cognome,codicefiscale,datanascita,dataassunzione,compagnia_id) values (?,?,?,?,?,?) where id = ?;")) {
+				"update impiegato set nome = ?, cognome = ?, codicefiscale = ?, datanascita = ?, dataassunzione = ?, compagnia_id = ? where id = ?;")) {
 
 			ps.setString(1, input.getNome());
 			ps.setString(2, input.getCognome());
@@ -308,6 +308,23 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 			throw e;
 		}
 
+		return result;
+	}
+
+	@Override
+	public int deleteAll() throws Exception {
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		int result = 0;
+		try (Statement s = connection.createStatement();){
+			
+			result = s.executeUpdate("delete from impiegato;");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			throw e;
+		}
 		return result;
 	}
 
