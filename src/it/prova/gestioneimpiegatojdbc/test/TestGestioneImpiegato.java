@@ -59,7 +59,7 @@ public class TestGestioneImpiegato {
 			testDeleteAllImpiegato(impiegatoDAOInstance);
 			
 			testDeleteCompagnia(compagniaDAOInstance);
-
+			
 
 		} catch (Exception e) {
 
@@ -251,5 +251,9 @@ public class TestGestioneImpiegato {
 		if (result == 0)
 			throw new RuntimeException("testDeleteAllImpiegato FAILED: cancellazione non andata a buon fine.");
 		System.out.println(".......testDeleteAllImpiegato fine: PASSED.............");
+	}
+	
+	private static void testDeleteImpiegato(ImpiegatoDAO impiegatoDAOInstance, CompagniaDAO compagniaDAOInstance) throws Exception{
+		System.out.println(".......testDeleteImpiegato inizio.............");
 	}
 }
