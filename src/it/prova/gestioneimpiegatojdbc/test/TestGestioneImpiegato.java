@@ -55,11 +55,12 @@ public class TestGestioneImpiegato {
 			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance);
 
 			testFindAllErroriAssunzione(impiegatoDAOInstance);
-			
+
+			testDeleteImpiegato(impiegatoDAOInstance);
+
 			testDeleteAllImpiegato(impiegatoDAOInstance);
-			
+
 			testDeleteCompagnia(compagniaDAOInstance);
-			
 
 		} catch (Exception e) {
 
@@ -252,8 +253,16 @@ public class TestGestioneImpiegato {
 			throw new RuntimeException("testDeleteAllImpiegato FAILED: cancellazione non andata a buon fine.");
 		System.out.println(".......testDeleteAllImpiegato fine: PASSED.............");
 	}
-	
-	private static void testDeleteImpiegato(ImpiegatoDAO impiegatoDAOInstance, CompagniaDAO compagniaDAOInstance) throws Exception{
+
+	private static void testDeleteImpiegato(ImpiegatoDAO impiegatoDAOInstance) throws Exception {
 		System.out.println(".......testDeleteImpiegato inizio.............");
+		List<Impiegato> elencoPresenti = impiegatoDAOInstance.list();
+		if (elencoPresenti.isEmpty())
+			throw new RuntimeException("testDeleteImpiegato FAILED: nessun elemento da cancellare.");
+		int result = impiegatoDAOInstance.delete(elencoPresenti.get(0));
+		if (result == 0)
+			throw new RuntimeException("testDeleteImpiegato FAILED: cancellazione non andata a buon fine.");
+		System.out.println(".......testDeleteImpiegato fine: PASSED.............");
+
 	}
 }
